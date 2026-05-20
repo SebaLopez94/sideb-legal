@@ -4,30 +4,89 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Support - Side B</title>
-  <meta name="description" content="Support for Side B: Album Tracker.">
+  <meta name="description" content="Support for Side B. Soporte para Side B.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="shell document">
-    <a class="back-link" href="index.html">Side B Legal</a>
-    <h1>Support</h1>
-    <p class="updated">Last updated: May 16, 2026</p>
+    <header class="topbar">
+      <a class="back-link" href="index.html">Side B Legal</a>
+      <div class="language-switcher" aria-label="Language selector">
+        <button type="button" data-set-lang="en">English</button>
+        <button type="button" data-set-lang="es">Español</button>
+      </div>
+    </header>
 
-    <h2>Contact</h2>
-    <p>For support, questions, or feedback, email <a href="mailto:sebalg180tech@gmail.com">sebalg180tech@gmail.com</a>.</p>
+    <article data-lang="en">
+      <h1>Support</h1>
+      <p class="updated">Last updated: May 16, 2026</p>
 
-    <h2>Subscription Help</h2>
-    <p>Side B Premium purchases are handled by Apple. You can manage or cancel your subscription from your Apple Account subscription settings.</p>
-    <p><a href="https://apps.apple.com/account/subscriptions">Manage Apple subscriptions</a></p>
+      <h2>Contact</h2>
+      <p>For support, questions, or feedback, email <a href="mailto:sebalg180tech@gmail.com">sebalg180tech@gmail.com</a>.</p>
 
-    <h2>Restore Purchases</h2>
-    <p>If Premium does not appear after purchase, open Side B, go to the Premium screen, and use Restore Purchases.</p>
+      <h2>Subscription Help</h2>
+      <p>Side B Premium purchases are handled by Apple. You can manage or cancel your subscription from your Apple Account subscription settings.</p>
+      <p><a href="https://apps.apple.com/account/subscriptions">Manage Apple subscriptions</a></p>
 
-    <h2>iCloud Sync</h2>
-    <p>Premium iCloud Sync requires iCloud to be enabled on your device and uses your private iCloud account. If sync is not working, check that you are signed in to iCloud and that iCloud Drive is enabled.</p>
+      <h2>Restore Purchases</h2>
+      <p>If Premium does not appear after purchase, open Side B, go to the Premium screen, and use Restore Purchases.</p>
 
-    <h2>Album Search</h2>
-    <p>Side B uses Apple's iTunes Search API for album and artist search. Search results can vary by region, spelling, and catalog availability.</p>
+      <h2>iCloud Sync</h2>
+      <p>Premium iCloud Sync requires iCloud to be enabled on your device and uses your private iCloud account. If sync is not working, check that you are signed in to iCloud and that iCloud Drive is enabled.</p>
+
+      <h2>Album Search</h2>
+      <p>Side B uses Apple's iTunes Search API for album and artist search. Search results can vary by region, spelling, and catalog availability.</p>
+    </article>
+
+    <article data-lang="es" hidden>
+      <h1>Soporte</h1>
+      <p class="updated">Última actualización: 16 de mayo de 2026</p>
+
+      <h2>Contacto</h2>
+      <p>Para soporte, preguntas o sugerencias, escribe a <a href="mailto:sebalg180tech@gmail.com">sebalg180tech@gmail.com</a>.</p>
+
+      <h2>Ayuda con la suscripción</h2>
+      <p>Las compras de Side B Premium las gestiona Apple. Puedes gestionar o cancelar tu suscripción desde los ajustes de suscripciones de tu cuenta de Apple.</p>
+      <p><a href="https://apps.apple.com/account/subscriptions">Gestionar suscripciones de Apple</a></p>
+
+      <h2>Restaurar compras</h2>
+      <p>Si Premium no aparece después de comprarlo, abre Side B, ve a la pantalla Premium y usa Restaurar compras.</p>
+
+      <h2>Sincronización con iCloud</h2>
+      <p>La sincronización con iCloud de Premium requiere que iCloud esté activado en tu dispositivo y usa tu cuenta privada de iCloud. Si la sincronización no funciona, comprueba que has iniciado sesión en iCloud y que iCloud Drive está activado.</p>
+
+      <h2>Búsqueda de álbumes</h2>
+      <p>Side B usa la API de búsqueda de iTunes de Apple para buscar álbumes y artistas. Los resultados pueden variar según la región, la forma de escribir la búsqueda y la disponibilidad del catálogo.</p>
+    </article>
   </main>
+
+  <script>
+    (function () {
+      const storageKey = "sideb-legal-language";
+      const buttons = document.querySelectorAll("[data-set-lang]");
+      const sections = document.querySelectorAll("[data-lang]");
+
+      function applyLanguage(language) {
+        document.documentElement.lang = language;
+        sections.forEach((section) => {
+          section.hidden = section.dataset.lang !== language;
+        });
+        buttons.forEach((button) => {
+          const isSelected = button.dataset.setLang === language;
+          button.classList.toggle("is-selected", isSelected);
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
+        localStorage.setItem(storageKey, language);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => applyLanguage(button.dataset.setLang));
+      });
+
+      const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+      const savedLanguage = localStorage.getItem(storageKey);
+      applyLanguage(savedLanguage === "es" || savedLanguage === "en" ? savedLanguage : browserLanguage);
+    })();
+  </script>
 </body>
 </html>

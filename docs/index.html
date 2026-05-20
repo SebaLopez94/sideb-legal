@@ -4,31 +4,93 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Side B Legal</title>
-  <meta name="description" content="Legal documents and support for Side B: Album Tracker.">
+  <meta name="description" content="Legal documents and support for Side B. Documentos legales y soporte de Side B.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="shell">
-    <section class="hero">
-      <p class="eyebrow">Side B</p>
-      <h1>Legal and Support</h1>
-      <p class="lede">Public documents for Side B: Album Tracker.</p>
+    <header class="topbar">
+      <p class="brand-mark">Side B</p>
+      <div class="language-switcher" aria-label="Language selector">
+        <button type="button" data-set-lang="en">English</button>
+        <button type="button" data-set-lang="es">Español</button>
+      </div>
+    </header>
+
+    <section data-lang="en">
+      <section class="hero">
+        <p class="eyebrow">Side B</p>
+        <h1>Legal and Support</h1>
+        <p class="lede">Public documents for Side B.</p>
+      </section>
+
+      <nav class="card-list" aria-label="Legal documents">
+        <a class="card" href="privacy.html">
+          <span>Privacy Policy</span>
+          <small>How Side B handles data and privacy.</small>
+        </a>
+        <a class="card" href="terms.html">
+          <span>Terms of Use</span>
+          <small>Subscription, billing, and usage terms.</small>
+        </a>
+        <a class="card" href="support.html">
+          <span>Support</span>
+          <small>Contact and troubleshooting.</small>
+        </a>
+      </nav>
     </section>
 
-    <nav class="card-list" aria-label="Legal documents">
-      <a class="card" href="privacy.html">
-        <span>Privacy Policy</span>
-        <small>How Side B handles data and privacy.</small>
-      </a>
-      <a class="card" href="terms.html">
-        <span>Terms of Use</span>
-        <small>Subscription, billing, and usage terms.</small>
-      </a>
-      <a class="card" href="support.html">
-        <span>Support</span>
-        <small>Contact and troubleshooting.</small>
-      </a>
-    </nav>
+    <section data-lang="es" hidden>
+      <section class="hero">
+        <p class="eyebrow">Side B</p>
+        <h1>Legal y soporte</h1>
+        <p class="lede">Documentos públicos de Side B.</p>
+      </section>
+
+      <nav class="card-list" aria-label="Documentos legales">
+        <a class="card" href="privacy.html">
+          <span>Política de privacidad</span>
+          <small>Cómo Side B trata los datos y la privacidad.</small>
+        </a>
+        <a class="card" href="terms.html">
+          <span>Términos de uso</span>
+          <small>Condiciones de suscripción, facturación y uso.</small>
+        </a>
+        <a class="card" href="support.html">
+          <span>Soporte</span>
+          <small>Contacto y resolución de problemas.</small>
+        </a>
+      </nav>
+    </section>
   </main>
+
+  <script>
+    (function () {
+      const storageKey = "sideb-legal-language";
+      const buttons = document.querySelectorAll("[data-set-lang]");
+      const sections = document.querySelectorAll("[data-lang]");
+
+      function applyLanguage(language) {
+        document.documentElement.lang = language;
+        sections.forEach((section) => {
+          section.hidden = section.dataset.lang !== language;
+        });
+        buttons.forEach((button) => {
+          const isSelected = button.dataset.setLang === language;
+          button.classList.toggle("is-selected", isSelected);
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
+        localStorage.setItem(storageKey, language);
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener("click", () => applyLanguage(button.dataset.setLang));
+      });
+
+      const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
+      const savedLanguage = localStorage.getItem(storageKey);
+      applyLanguage(savedLanguage === "es" || savedLanguage === "en" ? savedLanguage : browserLanguage);
+    })();
+  </script>
 </body>
 </html>
