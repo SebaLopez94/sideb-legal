@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Side B Legal</title>
-  <meta name="description" content="Legal documents and support for Side B. Documentos legales y soporte de Side B.">
+  <meta name="description" content="Legal documents and support for Side B in English, Spanish, German, and Japanese.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,6 +14,8 @@
       <div class="language-switcher" aria-label="Language selector">
         <button type="button" data-set-lang="en">English</button>
         <button type="button" data-set-lang="es">Español</button>
+        <button type="button" data-set-lang="de">Deutsch</button>
+        <button type="button" data-set-lang="ja">日本語</button>
       </div>
     </header>
 
@@ -62,34 +64,99 @@
         </a>
       </nav>
     </section>
+
+    <section data-lang="de" hidden>
+      <section class="hero">
+        <p class="eyebrow">Side B</p>
+        <h1>Rechtliches und Support</h1>
+        <p class="lede">Öffentliche Dokumente für Side B.</p>
+      </section>
+
+      <nav class="card-list" aria-label="Rechtliche Dokumente">
+        <a class="card" href="privacy.html">
+          <span>Datenschutzerklärung</span>
+          <small>Wie Side B mit Daten und Datenschutz umgeht.</small>
+        </a>
+        <a class="card" href="terms.html">
+          <span>Nutzungsbedingungen</span>
+          <small>Bedingungen zu Abonnement, Abrechnung und Nutzung.</small>
+        </a>
+        <a class="card" href="support.html">
+          <span>Support</span>
+          <small>Kontakt und Hilfe bei Problemen.</small>
+        </a>
+      </nav>
+    </section>
+
+    <section data-lang="ja" hidden>
+      <section class="hero">
+        <p class="eyebrow">Side B</p>
+        <h1>法的情報とサポート</h1>
+        <p class="lede">Side Bの公開ドキュメントです。</p>
+      </section>
+
+      <nav class="card-list" aria-label="法的ドキュメント">
+        <a class="card" href="privacy.html">
+          <span>プライバシーポリシー</span>
+          <small>Side Bでのデータとプライバシーの扱いについて。</small>
+        </a>
+        <a class="card" href="terms.html">
+          <span>利用規約</span>
+          <small>サブスクリプション、請求、利用条件について。</small>
+        </a>
+        <a class="card" href="support.html">
+          <span>サポート</span>
+          <small>お問い合わせとトラブルシューティング。</small>
+        </a>
+      </nav>
+    </section>
   </main>
 
   <script>
     (function () {
       const storageKey = "sideb-legal-language";
+      const supportedLanguages = ["en", "es", "de", "ja"];
+      const languageSelectorLabels = {
+        en: "Language selector",
+        es: "Selector de idioma",
+        de: "Sprachauswahl",
+        ja: "言語選択",
+      };
       const buttons = document.querySelectorAll("[data-set-lang]");
       const sections = document.querySelectorAll("[data-lang]");
+      const languageSwitchers = document.querySelectorAll(".language-switcher");
+
+      function preferredLanguage() {
+        const language = (navigator.language || "").toLowerCase();
+        if (language.startsWith("es")) return "es";
+        if (language.startsWith("de")) return "de";
+        if (language.startsWith("ja")) return "ja";
+        return "en";
+      }
 
       function applyLanguage(language) {
-        document.documentElement.lang = language;
+        const normalizedLanguage = supportedLanguages.includes(language) ? language : "en";
+        document.documentElement.lang = normalizedLanguage;
         sections.forEach((section) => {
-          section.hidden = section.dataset.lang !== language;
+          section.hidden = section.dataset.lang !== normalizedLanguage;
         });
         buttons.forEach((button) => {
-          const isSelected = button.dataset.setLang === language;
+          const isSelected = button.dataset.setLang === normalizedLanguage;
           button.classList.toggle("is-selected", isSelected);
           button.setAttribute("aria-pressed", String(isSelected));
         });
-        localStorage.setItem(storageKey, language);
+        languageSwitchers.forEach((switcher) => {
+          switcher.setAttribute("aria-label", languageSelectorLabels[normalizedLanguage]);
+        });
+        localStorage.setItem(storageKey, normalizedLanguage);
       }
 
       buttons.forEach((button) => {
         button.addEventListener("click", () => applyLanguage(button.dataset.setLang));
       });
 
-      const browserLanguage = navigator.language && navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
       const savedLanguage = localStorage.getItem(storageKey);
-      applyLanguage(savedLanguage === "es" || savedLanguage === "en" ? savedLanguage : browserLanguage);
+      applyLanguage(supportedLanguages.includes(savedLanguage) ? savedLanguage : preferredLanguage());
     })();
   </script>
 </body>

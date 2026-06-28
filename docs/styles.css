@@ -64,6 +64,7 @@ a {
 
 .language-switcher {
   display: inline-flex;
+  flex-wrap: wrap;
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--stroke);
@@ -74,7 +75,7 @@ a {
 
 .language-switcher button {
   min-height: 34px;
-  padding: 0 14px;
+  padding: 0 12px;
   border: 0;
   border-radius: 999px;
   color: var(--muted);
